@@ -41,8 +41,8 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 }
 
-FILE *open_file(char FitnessData_2023[], char mode[]) {
-    FILE *file = fopen(FitnessData_2023, mode);
+FILE *open_file(char fileName[], char mode[]) {
+    FILE *file = fopen(fileName, mode);
     if (file == NULL) {
         perror("");
         exit(1);
@@ -61,7 +61,8 @@ int main() {
     char line_buffer[buffer_size];
     int i=0;
     while (fgets(line_buffer, buffer_size, file) != NULL) {
-        tokeniseRecord(put stuff here);
+        tokeniseRecord(line_buffer, ",", data[i].date, data[i].time, data[i].steps);
+        i++;
         printf("%s", line_buffer);
     }
 
