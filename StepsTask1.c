@@ -23,7 +23,8 @@ void tokeniseRecord(const char *input, const char *delimiter,
     
     // Tokenize the copied string
     char *token = strtok(inputCopy, delimiter);
-    if (token != NULL) {        strcpy(date, token);
+    if (token != NULL) { 
+       strcpy(date, token);
     }
     
     token = strtok(NULL, delimiter);
@@ -53,18 +54,31 @@ FILE *open_file(char fileName[], char mode[]) {
 
 // Complete the main function
 int main() {
-    FITNESS_DATA data[250];
+    FITNESS_DATA data[128];
     char FitnessData_2023 [] = "FitnessData_2023.csv";
     FILE *file = open_file(FitnessData_2023, "r");
 
     int buffer_size = 100;
     char line_buffer[buffer_size];
+    char *delimeter = ", ";
     int i=0;
     while (fgets(line_buffer, buffer_size, file) != NULL) {
-        tokeniseRecord(line_buffer, ",", data[i].date, data[i].time, data[i].steps);
+        char *stepsTemp = (char *) malloc(6);
+        char *dateTemp = (char *) malloc(11);
+        char *timeTemp = (char *) malloc(6);
+        tokeniseRecord(line_buffer, delimeter, dateTemp, timeTemp, stepsTemp);
+
+        strcpy(data[i].date, dateTemp);
+        strcpy(data[i].time, timeTemp);
+        data[i].steps = atoi(stepsTemp);
+
         i++;
-        printf("%s", line_buffer);
     }
+    
+    printf("number of records in file: %d \n", i);
+    printf("%s/%s/%d \n",data[0].date,data[0].time,data[0].steps);
+    printf("%s/%s/%d \n",data[1].date,data[1].time,data[1].steps);
+    printf("%s/%s/%d \n",data[2].date,data[2].time,data[2].steps);
 
     fclose(file);
     return 0;
